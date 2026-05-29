@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── ROOT DESIGN TOKENS ───────────────────── */
+:root {
+  --color-canvas:   #ffffff;
+  --color-surface:  #f6f5f4;
+  --color-hairline: #e5e3df;
+  --color-primary:  #5645d4;
+  --color-ink:      #1a1a1a;
+  --color-charcoal: #37352f;
+  --color-steel:    #787671;
+  --color-muted:    #bbb8b1;
+  --font-sans:      'Inter', -apple-system, system-ui, 'Segoe UI', Helvetica, sans-serif;
+  --font-mono:      'JetBrains Mono', monospace;
+}
+
+/* ── BASE RESET ───────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── SCROLLBAR STYLING ────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-hairline);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c8c4be;
+}
+
+/* ── SELECTION ────────────────────────────── */
+::selection {
+  background-color: rgba(86, 69, 212, 0.18);
+  color: var(--color-ink);
+}
+
+/* ── FOCUS OUTLINE ────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── SHIMMER SKELETON ─────────────────────── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    #eae8e5 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 700px 100%;
+  animation: shimmer 1.8s linear infinite;
+}
+
+/* ── STAGGER ANIMATION DELAYS ─────────────── */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.30s; }
+
+/* ── INVISIBLE SCROLLBAR (for horizontal scroll) ── */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
