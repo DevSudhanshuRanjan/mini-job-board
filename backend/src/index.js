@@ -18,17 +18,23 @@ app.use(helmet({
 }));
 
 // ── CORS ──────────────────────────────────────────────────────────
+// When ALLOWED_ORIGINS includes '*', we reflect the request origin back.
+// This is required because browsers reject credentials:true + origin:'*'.
+const allowAllOrigins = ENV.ALLOWED_ORIGINS.includes('*');
+
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || ENV.ALLOWED_ORIGINS.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS blocked: origin ${origin} not allowed`));
-    }
-  },
-  methods:     ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  origin: allowAllOrigins
+    ? true  // reflect request origin — works with credentials
+    : (origin, callback) => {
+        if (!origin || ENV.ALLOWED_ORIGINS.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error(`CORS blocked: origin ${origin} not allowed`));
+        }
+      },
+  methods:        ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  credentials:    true,
 }));
 
 // ── Rate Limiting ──────────────────────────────────────────────────
@@ -63,6 +69,14 @@ app.get('/health', (req, res) => {
     uptime:      process.uptime(),
     environment: ENV.NODE_ENV,
     timestamp:   new Date().toISOString(),
+  });
+});
+
+// ── Root Endpoint ──────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  return sendSuccess(res, 200, 'Welcome to the Mini Job Board API', {
+    jobs_api: '/api/jobs',
+    health:   '/health',
   });
 });
 
